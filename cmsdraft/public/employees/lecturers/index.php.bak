@@ -1,0 +1,59 @@
+<!--sanitise below path-->
+<?php require_once('../../../private/initialize.php'); ?>
+
+<?php
+
+  $lecturer_set = find_all_lecturers();
+  
+
+?>
+
+<?php $lecturer_title = 'lecturers'; ?>
+<!--sanitise below path-->
+<?php include(SHARED_PATH . '/employee_header.php'); ?>
+
+<div id="content">
+  <div class="lecturers listing">
+    <h1>lecturers</h1>
+
+    <div class="actions">
+	<!--sanitise below path-->
+      <a class="action" href="<?php echo url_for('/employees/lecturers/new.php'); ?>">Create New Lecturer</a>
+    </div>
+
+  	<table class="list">
+  	  <tr>
+        <th>ID</th>
+        <th>payslip</th>
+        <th>Position</th>
+        <th>Visible</th>
+  	    <th>Name</th>
+  	    <th>&nbsp;</th>
+  	    <th>&nbsp;</th>
+        <th>&nbsp;</th>
+  	  </tr>
+
+      <?php while($lecturer = mysqli_fetch_assoc($lecturer_set)) { ?>
+        <?php $payslip = find_payslip_by_id($lecturer['payslips_id']); ?>
+        <tr>
+		<!--sanitise below data-->
+          <td><?php echo ($lecturer['id']); ?></td>
+          <td><?php echo ($payslip['category']); ?></td>
+          <td><?php echo ($lecturer['position']); ?></td>
+          <td><?php echo $lecturer['visible'] == 1 ? 'true' : 'false'; ?></td>
+    	    <td><?php echo h($lecturer['category']); ?></td>
+			<!--sanitise below data which are passed-->
+          <td><a class="action" href="<?php echo url_for('/employees/lecturers/show.php?id=' . ($lecturer['id'])); ?>">View</a></td>
+          <td><a class="action" href="<?php echo url_for('/employees/lecturers/edit.php?id=' .($lecturer['id'])); ?>">Edit</a></td>
+          <td><a class="action" href="<?php echo url_for('/employees/lecturers/delete.php?id=' . ($lecturer['id'])); ?>">Delete</a></td>
+    	  </tr>
+      <?php } ?>
+  	</table>
+
+    <?php mysqli_free_result($lecturer_set); ?>
+
+  </div>
+
+</div>
+<!--sanitise below path-->
+<?php include(SHARED_PATH . '/employee_footer.php'); ?>
